@@ -1,0 +1,79 @@
+.profile-details {
+  margin-top: 1.5rem;
+}
+
+.info-section {
+  margin-bottom: 2rem;
+
+  h3 {
+    color: rgba(0, 0, 0, 0.87);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+}
+
+.info-group {
+  display: flex;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+
+  .info-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 200px;
+    color: rgba(0, 0, 0, 0.6);
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .info-value {
+    flex: 1;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.87);
+  }
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+
+  button {
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 600px) {
+  .profile-container mat-card {
+    padding: 1rem;
+  }
+
+  .info-group {
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .info-label {
+      width: 100%;
+    }
+
+    .info-value {
+      padding-left: 28px; // Pour aligner avec l'icône
+    }
+  }
+
+  .action-buttons {
+    button {
+      width: 100%;
+    }
+  }
+}

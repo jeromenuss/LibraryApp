@@ -1,0 +1,63 @@
+<div class="profile-details">
+  <!-- Informations personnelles -->
+  <div class="info-section">
+    <h3>Informations personnelles</h3>
+
+    <div class="info-group">
+      <div class="info-label">
+        <mat-icon>person</mat-icon>
+        <span>Nom</span>
+      </div>
+      <div class="info-value">{{ profile?.name }}</div>
+    </div>
+
+    <div class="info-group">
+      <div class="info-label">
+        <mat-icon>person</mat-icon>
+        <span>Prénom</span>
+      </div>
+      <div class="info-value">{{ profile?.lastName }}</div>
+    </div>
+
+    <div class="info-group">
+      <div class="info-label">
+        <mat-icon>email</mat-icon>
+        <span>Email</span>
+      </div>
+      <div class="info-value">{{ profile?.mail }}</div>
+    </div>
+
+    <div class="info-group">
+      <div class="info-label">
+        <mat-icon>phone</mat-icon>
+        <span>Téléphone</span>
+      </div>
+      <div class="info-value">{{ profile?.phone }}</div>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Sécurité -->
+  <div class="info-section">
+    <h3>Sécurité</h3>
+
+    <div class="info-group">
+      <div class="info-label">
+        <mat-icon>lock</mat-icon>
+        <span>Mot de passe</span>
+      </div>
+      <div class="info-value">••••••••</div>
+    </div>
+  </div>
+
+  <!-- Bouton de modification -->
+  @if(canEditProfile){
+    <div class="action-buttons">
+      <button mat-raised-button color="primary" (click)="onEditProfile()">
+        <mat-icon>edit</mat-icon>
+        Modifier le profil
+      </button>
+    </div>
+  }
+</div>

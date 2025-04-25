@@ -1,0 +1,16 @@
+{
+  "name": "libraryapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-webapp:debug": "cd webapp && npm run start",
+    "start-api:debug": "cd webapi && npm run start:debug",
+    "start:debug": "concurrently \"npm run start-api:debug\" \"npm run start-webapp:debug\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true,
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

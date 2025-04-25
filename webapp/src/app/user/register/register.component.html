@@ -1,0 +1,64 @@
+@if(hasError){
+  <app-message Type="danger">
+    {{ errorMessage }}
+  </app-message>
+}
+<div class="register-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Création d'un compte</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email">
+          @if(registerForm.controls.email.invalid){
+            <mat-error>
+              Veuillez saisir une adresse mail valide
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Mot de passe</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          @if(registerForm.get('password')?.invalid){
+            <mat-error>
+              Veuillez saisir un mot de passe valide
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Votre nom</mat-label>
+          <input matInput type="text" formControlName="name">
+          @if(registerForm.controls.name.invalid){
+            <mat-error>
+              Veuillez saisir votre nom
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Votre prénom</mat-label>
+          <input matInput type="text" formControlName="lastName">
+          @if(registerForm.controls.lastName.invalid){
+            <mat-error>
+              Veuillez saisir votre prénom
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid" class="full-width">
+          Créer un compte
+        </button>
+        <a mat-button routerLink="login">Se connecter</a>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

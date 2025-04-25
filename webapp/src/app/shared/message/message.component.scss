@@ -1,0 +1,73 @@
+.alert-card {
+  border-radius: 4px;
+  box-shadow: none !important;
+
+  .alert-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    span {
+      flex: 1;
+    }
+
+    button {
+      opacity: 0.7;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  &.danger {
+    background-color: #fdeded;
+    color: #5f2120;
+    border: 1px solid #f5c2c7;
+    .type-message-icon {
+      color: #dc3545;
+    }
+  }
+
+  &.success {
+    background-color: #edf7ed;
+    color: #1e4620;
+    border: 1px solid #badbcc;
+    .type-message-icon {
+      color: #198754;
+    }
+  }
+
+  &.info {
+    background-color: #e7f5ff;
+    color: #055160;
+    border: 1px solid #b6effb;
+    .type-message-icon {
+      color: #0dcaf0;
+    }
+  }
+
+  &.warning {
+    background-color: #fff3cd;
+    color: #664d03;
+    border: 1px solid #ffecb5;
+    .type-message-icon {
+      color: #ffc107;
+    }
+  }
+}
+
+// Animation optionnelle pour l'apparition
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.alert-card {
+  animation: slideIn 0.3s ease-out;
+}

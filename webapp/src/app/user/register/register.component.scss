@@ -1,0 +1,37 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  mat-card {
+    max-width: 400px;
+    width: 90%;
+    padding: 20px;
+    margin-top: 100px;
+
+    mat-card-header {
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    mat-card-title {
+      font-size: 24px;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  button[type="submit"] {
+    margin-top: 20px;
+    height: 45px;
+    font-size: 16px;
+  }
+}

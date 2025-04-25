@@ -1,0 +1,16 @@
+<div class="profile-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Votre profile</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if(isEdit){
+        <app-profile-edit [profile]="profile" (profileView)="onFinishEdit($event)" />
+      } @else {
+        <app-profile-view [profile]="profile" [canEditProfile]="canEditProfile" (editProfile)="onEditProfile()" />
+      }
+
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,71 @@
+<h1>Bienvenue...</h1>
+<div class="book-grid-container">
+
+  <mat-card class="search-card">
+    <mat-card-content>
+      <form class="search-form">
+        <div class="search-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Titre</mat-label>
+            <input matInput placeholder="Rechercher par titre">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Auteur</mat-label>
+            <input matInput placeholder="Rechercher par auteur">
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select>
+              <mat-option value="">Tous</mat-option>
+              <mat-option value="roman">Roman</mat-option>
+              <mat-option value="bd">BD</mat-option>
+              <mat-option value="documentaire">Documentaire</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Année min</mat-label>
+            <input matInput type="number" placeholder="1900">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Année max</mat-label>
+            <input matInput type="number" [max]="currentYear" placeholder="2024">
+          </mat-form-field>
+
+          <div class="search-actions">
+            <button mat-icon-button color="primary">
+              <mat-icon>search</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" aria-label="Réinitialiser">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="grid-wrapper">
+    <mat-grid-list [cols]="3" rowHeight="300px" gutterSize="16px">
+      @for (book of booksPaginate.data; track book.id) {
+        <mat-grid-tile>
+          <app-book-card [book]="book" />
+        </mat-grid-tile>
+      }
+    </mat-grid-list>
+  </div>
+
+  <mat-paginator
+    [length]="booksPaginate.totalCount"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="[10,20,30]"
+    (page)="onPageChange($event)"
+    aria-label="Sélectionner la page">
+  </mat-paginator>
+</div>

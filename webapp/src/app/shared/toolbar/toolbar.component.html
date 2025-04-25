@@ -1,0 +1,42 @@
+<mat-toolbar color="primary" class="header">
+  <mat-toolbar-row>
+    <!-- Logo/Titre -->
+    <a mat-button routerLink="/" class="app-title">
+      <mat-icon>home</mat-icon>
+      <span>{{ titleApp }}</span>
+    </a>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+      <a mat-button routerLink="/features">Les livres</a>
+      <a mat-button routerLink="/about">Gestion des emprunts</a>
+    </div>
+
+    <!-- Spacer -->
+    <span class="spacer"></span>
+
+    <!-- User Menu -->
+    @if(hasLogin | async){
+      <button mat-stroked-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+        {{ displayName }}
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/user/profile/me">
+          <mat-icon>person</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Déconnexion</span>
+        </button>
+      </mat-menu>
+    }@else{
+      <div class="nav-links">
+        <a mat-button routerLink="/user/register">Créer un compte</a>
+        <a mat-button routerLink="/user/login">Se connecter</a>
+      </div>
+    }
+
+  </mat-toolbar-row>
+</mat-toolbar>

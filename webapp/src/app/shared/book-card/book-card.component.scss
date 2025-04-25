@@ -1,0 +1,27 @@
+.book-card {
+  width: 100%;
+  /*margin: 8px;*/
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+
+  mat-card-header {
+    margin-bottom: 16px;
+  }
+
+  mat-card-content {
+    flex-grow: 1;
+
+    .description {
+      text-align: justify;
+      margin: 0;
+      line-height: 1.5;
+    }
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+  }
+}

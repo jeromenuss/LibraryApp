@@ -1,0 +1,28 @@
+  <mat-card class="alert-card" [ngClass]="Type">
+    <mat-card-content>
+      <div class="alert-content">
+        @switch (Type){
+          @case ('danger'){
+            <mat-icon class="type-message-icon">error</mat-icon>
+          }
+          @case ('success'){
+            <mat-icon class="type-message-icon">check_circle</mat-icon>
+          }
+          @case ('info'){
+            <mat-icon class="type-message-icon">info</mat-icon>
+          }
+          @case ('warning'){
+            <mat-icon class="type-message-icon">warning</mat-icon>
+          }
+          @default {
+            <mat-icon class="type-message-icon">info</mat-icon>
+          }
+        }
+
+        <span><ng-content /></span>
+        <button mat-icon-button (click)="onClose()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>

@@ -1,0 +1,145 @@
+.book-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  mat-card {
+    padding: 2rem;
+  }
+}
+
+.book-layout {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.cover-section {
+  flex: 0 0 300px;
+
+  .book-cover {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.info-section {
+  flex: 1;
+}
+
+.info-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+
+  .info-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 200px;
+    color: rgba(0, 0, 0, 0.6);
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .info-value {
+    flex: 1;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.87);
+
+    mat-chip-set {
+      mat-chip {
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}
+
+mat-divider {
+  margin: 2rem 0;
+}
+
+.description-section {
+  margin: 2rem 0;
+
+  h3 {
+    color: rgba(0, 0, 0, 0.87);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .description-text {
+    line-height: 1.6;
+    color: rgba(0, 0, 0, 0.7);
+    text-align: justify;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+
+  button {
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .book-layout {
+    flex-direction: column;
+  }
+
+  .cover-section {
+    flex: none;
+    text-align: center;
+
+    .book-cover {
+      max-width: 250px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .book-container mat-card {
+    padding: 1rem;
+  }
+
+  .info-group {
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .info-label {
+      width: 100%;
+    }
+
+    .info-value {
+      padding-left: 28px;
+    }
+  }
+
+  .action-buttons {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}

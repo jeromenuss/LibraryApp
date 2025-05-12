@@ -1,0 +1,111 @@
+.book-edit-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  mat-card {
+    padding: 2rem;
+  }
+}
+
+.form-layout {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.cover-section {
+  flex: 0 0 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .book-cover {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .cover-upload {
+    text-align: center;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+.form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+
+  button {
+    min-width: 120px;
+
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .form-layout {
+    flex-direction: column;
+  }
+
+  .cover-section {
+    flex: none;
+
+    .book-cover {
+      max-width: 250px;
+      margin: 0 auto;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .book-edit-container mat-card {
+    padding: 1rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+.api-selection {
+  padding: 0 1rem;
+
+  .api-search {
+    margin-top: 1rem;
+    width: 100%;
+  }
+}
+
+// Style responsive existant...
+@media (max-width: 600px) {
+  .api-selection {
+    padding: 0.5rem;
+  }
+}

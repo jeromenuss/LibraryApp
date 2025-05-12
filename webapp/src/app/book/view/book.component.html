@@ -1,0 +1,95 @@
+<div class="book-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{book.title}}</mat-card-title>
+      <mat-card-subtitle>par {{book.author}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="book-details">
+        <!-- Layout en deux colonnes -->
+        <div class="book-layout">
+          <!-- Colonne gauche : couverture -->
+          <div class="cover-section">
+            <img [src]="coverUrl"
+                 [alt]="book.title"
+                 class="book-cover"
+                 (error)="onImageError($event)">
+          </div>
+
+          <!-- Colonne droite : informations -->
+          <div class="info-section">
+            <div class="info-group">
+              <div class="info-label">
+                <mat-icon>bookmark</mat-icon>
+                <span>ISBN</span>
+              </div>
+              <div class="info-value">{{book.isbn}}</div>
+            </div>
+
+            <div class="info-group">
+              <div class="info-label">
+                <mat-icon>category</mat-icon>
+                <span>Genre</span>
+              </div>
+              <div class="info-value">{{ book.kind }}</div>
+            </div>
+
+            <div class="info-group">
+              <div class="info-label">
+                <mat-icon>calendar_today</mat-icon>
+                <span>Année de publication</span>
+              </div>
+              <div class="info-value">{{ book.yearPublish }}</div>
+            </div>
+
+            <div class="info-group">
+              <div class="info-label">
+                <mat-icon>date_range</mat-icon>
+                <span>Date d'ajout</span>
+              </div>
+              <div class="info-value">{{ book.addDate | date:"dd MMMM YYYY": "fr-FR" }}</div>
+            </div>
+
+            <div class="info-group">
+              <div class="info-label">
+                <mat-icon>library_books</mat-icon>
+                <span>Disponibilité</span>
+              </div>
+              <div class="info-value">
+                <mat-chip-set>
+                  <mat-chip [color]="book.copiesNumber > 0 ? 'primary' : 'warn'" selected>
+                    <mat-icon>{{book.copiesNumber > 0 ? 'check_circle' : 'cancel'}}</mat-icon>
+                    {{book.copiesNumber > 0 ? 'Disponible' : 'Indisponible'}}
+                  </mat-chip>
+                </mat-chip-set>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Description -->
+        <div class="description-section">
+          <h3>Description</h3>
+          <p class="description-text">
+            {{book.description}}
+          </p>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="action-buttons">
+          <a mat-stroked-button color="primary" routerLink="/book/edit/{{book.id}}">
+            <mat-icon>edit</mat-icon>
+            Modifier
+          </a>
+          <button mat-raised-button color="primary" [disabled]="book.copiesNumber === 0">
+            <mat-icon>book</mat-icon>
+            Emprunter
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

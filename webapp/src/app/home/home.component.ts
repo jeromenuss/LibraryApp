@@ -13,6 +13,10 @@ import {MatSelect} from "@angular/material/select";
 import {MatOption} from "@angular/material/core";
 import {MessageComponent} from "../shared/message/message.component";
 import {RouterLink} from "@angular/router";
+import {last} from "rxjs";
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+
+const MIN_YEAR_SEARCH:number = 1400;
 
 @Component({
   selector: 'app-home',
@@ -30,35 +34,51 @@ import {RouterLink} from "@angular/router";
     MatOption,
     MatIconButton,
     MatIconModule,
-    MessageComponent,
-    MatAnchor,
-    RouterLink
+    ReactiveFormsModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
+
+
   pageSize:number = 10;
-  pageIndex:number = 1;
+  pageIndex:number = 0;
   currentYear:number = new Date().getFullYear();
 
   booksPaginate:Pagination<Book> = {
     data : [],
-    page : this.pageIndex,
+    isLastPage: false,
     pageSize : this.pageSize,
     totalCount : 0
   };
 
-  private booksService:BooksService = inject(BooksService);
+  searchForm!: FormGroup<{
+    minYear: FormControl<number>;
+    maxYear: FormControl<number>;
+  }>;
+
+  constructor(private booksService:BooksService, private fb:FormBuilder) {
+  }
 
   ngOnInit(): void {
-    this.getBooks();
+    this.searchForm = this.fb.nonNullable.group({
+      minYear:[MIN_YEAR_SEARCH, [Validators.min(1400)]],
+      maxYear:[this.currentYear, [Validators.max(this.currentYear)]]
+    });
+    this.getBooks("next", true);
   }
 
   onPageChange($event: PageEvent) {
+    const prevPage = $event.previousPageIndex ?? 0;
+    const isPreviousPage = prevPage >= $event.pageIndex;
+
     this.pageIndex = $event.pageIndex;
     this.pageSize = $event.pageSize;
-    this.getBooks();
+
+    const typeRead = isPreviousPage ? "previous" : "next";
+
+    this.getBooks(typeRead, false);
   }
 
   borrowBook(id:number) {
@@ -69,9 +89,38 @@ export class HomeComponent implements OnInit {
 
   }
 
-  private getBooks(){
-    this.booksService.getAllBooks(this.pageIndex, this.pageSize).subscribe((data) => {
+  private getBooks(typeRead:"previous" | "next" = "next", isInit:Boolean = false) {
+
+    let positionId = "";
+    if(!isInit){
+      if(typeRead == "previous"){
+        positionId = this.booksPaginate.data[0].id;
+      }else{
+        positionId = this.booksPaginate.data.length > 0 ? this.booksPaginate.data[this.booksPaginate.data.length - 1].id : "";
+      }
+    }
+
+    console.log(positionId);
+
+    this.booksService.searchBooks(
+      this.pageIndex,
+      typeRead,
+      positionId,
+      this.searchForm.value.minYear ?? 0,
+      this.searchForm.value.maxYear ?? 0
+    ).subscribe((data) => {
       this.booksPaginate = data;
+      if(isInit) this.pageIndex = 0;
     });
+  }
+
+  onSearch() {
+    this.getBooks("next", true);
+  }
+
+  onReinit(){
+    this.searchForm.controls.minYear.setValue(MIN_YEAR_SEARCH);
+    this.searchForm.controls.maxYear.setValue(this.currentYear);
+    this.getBooks("next", true);
   }
 }

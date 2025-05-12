@@ -1,11 +1,13 @@
 export interface Book{
-  id:number;
+  id:string;
   isbn:string;
   title:string;
   author:string;
-  yearPublish:string;
+  yearPublish:number;
+  category:string;
   kind:string;
   description:string;
   copiesNumber:number;
   addDate:Date;
+  updateDate:Date;
 }

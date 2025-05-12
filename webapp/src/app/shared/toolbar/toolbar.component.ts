@@ -1,22 +1,20 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AsyncPipe} from "@angular/common";
-import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
+import {MatAnchor, MatButton} from "@angular/material/button";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatToolbar, MatToolbarRow} from "@angular/material/toolbar";
 import {RouterLink} from "@angular/router";
-import {filter, Observable, switchMap} from "rxjs";
+import {map} from "rxjs";
 import {environment} from "@env/.environment";
 import {MatIcon} from "@angular/material/icon";
-import {Profile} from "../../core/model/profile.model";
 import {ProfilesService} from "../../core/services/profiles.service";
-import {subscribe} from "@angular/fire/data-connect";
+import {AuthService} from "../../core/services/auth.service";
 
 @Component({
   selector: 'app-toolbar',
   imports: [
     AsyncPipe,
     MatAnchor,
-    MatIconButton,
     MatMenu,
     MatMenuItem,
     MatToolbar,
@@ -33,17 +31,19 @@ export class ToolbarComponent implements OnInit, OnChanges {
 
   titleApp = environment.applicationName;
 
-  @Input()
-  hasLogin!: Observable<Boolean>;
-  displayName!: string;
+  hasLogin = this.authService.hasLogin;
+  isAdmin = this.profileService.isAdmin;
+
+  displayName = this.profileService.getDisplayName().pipe(map(user => user.username));
 
   @Output()
   logoutEvent: EventEmitter<any> = new EventEmitter();
 
-  constructor(private profileService: ProfilesService) {
+  constructor(private authService: AuthService, private profileService: ProfilesService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    /*console.log(changes);
 
     if(changes['hasLogin'].currentValue) {
       console.log("On n'y est !");
@@ -58,11 +58,11 @@ export class ToolbarComponent implements OnInit, OnChanges {
           console.log(error);
         }
       });
-    }
+    }*/
   }
 
   ngOnInit() {
-
+    //console.log("Toolbar - ngOnInit");
   }
 
   logout(){

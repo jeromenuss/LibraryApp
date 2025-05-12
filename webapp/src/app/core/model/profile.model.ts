@@ -7,4 +7,5 @@ export interface Profile {
   phone?:string;
   registered: Date;
   isActive:boolean;
+  role:'User'|'Admin';
 }

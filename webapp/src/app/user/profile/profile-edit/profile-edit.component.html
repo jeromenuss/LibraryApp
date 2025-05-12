@@ -33,26 +33,27 @@
 <!-- Section mot de passe -->
 <mat-divider></mat-divider>
   <h3>Modifier le mot de passe</h3>
-
-  <div class="form-row">
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Mot de passe actuel</mat-label>
-      <input matInput type="password">
-      <mat-icon matSuffix>lock</mat-icon>
-    </mat-form-field>
-  </div>
+  <p>Si vous modidiez votre mot de passe et pour des raisons de sécurité, vous allez être déconnecté.</p>
 
   <div class="form-row">
     <mat-form-field appearance="outline">
       <mat-label>Nouveau mot de passe</mat-label>
-      <input matInput type="password">
+      <input matInput type="password" formControlName="password">
+      @if(profileForm.controls.password.errors?.['minlength']){
+        <mat-error>Veuillez saisir un mot de passe d'une longueur de 6 caractères minimales</mat-error>
+      }
       <mat-icon matSuffix>lock_outline</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Confirmer le mot de passe</mat-label>
-      <input matInput type="password">
+      <input matInput type="password" formControlName="passwordConfirm">
       <mat-icon matSuffix>lock_outline</mat-icon>
+      @if(profileForm.controls.passwordConfirm.errors?.['minlength']) {
+        <mat-error>Veuillez saisir un mot de passe d'une longueur de 6 caractères minimales</mat-error>
+      } @else if (profileForm.controls.passwordConfirm.errors) {
+        <mat-error>Les mots de passe de ne correspondent pas</mat-error>
+      }
     </mat-form-field>
   </div>
 

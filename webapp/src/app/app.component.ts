@@ -14,9 +14,11 @@ import {ProfilesService} from "./core/services/profiles.service";
 })
 export class AppComponent implements OnChanges, OnInit {
   displayName = ""
-  hasLogin = this.authService.hasLogin;
+  title = environment.applicationName;
+  currentYear = new Date().getFullYear()
 
-  constructor(private authService: AuthService, private profileService: ProfilesService, private router: Router) {
+
+  constructor(private authService: AuthService, private router: Router) {
   }
 
 

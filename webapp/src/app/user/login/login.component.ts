@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private authService:AuthService, private router: Router, private route:ActivatedRoute) {
     this.loginForm = this.fb.nonNullable.group({
-      email: ["jerome@exemple.com", [Validators.required, Validators.email]],
+      email: ["nuss.j@sfeir.com", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.minLength(6)]]
     }) ;
   }

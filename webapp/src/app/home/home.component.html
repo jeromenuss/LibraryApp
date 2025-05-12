@@ -3,23 +3,23 @@
 
   <mat-card class="search-card">
     <mat-card-content>
-      <form class="search-form">
+      <form class="search-form" [formGroup]="searchForm" (ngSubmit)="onSearch()">
         <div class="search-row">
           <mat-form-field appearance="outline">
             <mat-label>Titre</mat-label>
-            <input matInput placeholder="Rechercher par titre">
+            <input matInput placeholder="Rechercher par titre" disabled>
             <mat-icon matSuffix>search</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Auteur</mat-label>
-            <input matInput placeholder="Rechercher par auteur">
+            <input matInput placeholder="Rechercher par auteur" disabled>
             <mat-icon matSuffix>person</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Type</mat-label>
-            <mat-select>
+            <mat-select disabled>
               <mat-option value="">Tous</mat-option>
               <mat-option value="roman">Roman</mat-option>
               <mat-option value="bd">BD</mat-option>
@@ -29,19 +29,19 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Année min</mat-label>
-            <input matInput type="number" placeholder="1900">
+            <input matInput type="number" placeholder="1900" formControlName="minYear">
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Année max</mat-label>
-            <input matInput type="number" [max]="currentYear" placeholder="2024">
+            <input matInput type="number" [max]="currentYear" placeholder="2024" formControlName="maxYear">
           </mat-form-field>
 
           <div class="search-actions">
-            <button mat-icon-button color="primary">
+            <button mat-icon-button color="primary" type="submit">
               <mat-icon>search</mat-icon>
             </button>
-            <button mat-icon-button color="warn" aria-label="Réinitialiser">
+            <button mat-icon-button color="warn" aria-label="Réinitialiser" (click)="onReinit()">
               <mat-icon>clear</mat-icon>
             </button>
           </div>

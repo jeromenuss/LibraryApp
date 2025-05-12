@@ -33,4 +33,11 @@ export class ProfilesService {
       )
     );
   }
+
+  get isAdmin(): Observable<boolean> {
+    return this.getCurrentProfile().pipe(
+      filter(user => !!user),
+      map(profile => profile.role == "Admin"),
+    );
+  }
 }

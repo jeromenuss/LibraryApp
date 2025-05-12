@@ -15,9 +15,9 @@
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>
           <input matInput type="email" formControlName="email" placeholder="exemple@email.com">
-          @if(loginForm.get('email')?.invalid){
+          @if(loginForm.controls.email.invalid){
             <mat-error>
-              {{ getErrorMessage('email') }}
+              Veuillez saisir une adresse mail valide
             </mat-error>
           }
         </mat-form-field>
@@ -28,9 +28,9 @@
           <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
             <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
-          @if(loginForm.get('password')?.invalid){
+          @if(loginForm.controls.password.invalid){
             <mat-error>
-              {{ getErrorMessage('password') }}
+              Veuillez saisir un mot de passe. Votre mot de passe doit contenir 6 caractères minimum.
             </mat-error>
           }
         </mat-form-field>

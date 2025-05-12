@@ -1,10 +1,5 @@
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
-import {MatFormField} from "@angular/material/form-field";
-import {MatInput, MatLabel} from "@angular/material/input";
-import {MatIcon} from "@angular/material/icon";
-import {MatDivider} from "@angular/material/divider";
-import {MatButton} from "@angular/material/button";
 import {ProfileEditComponent} from "./profile-edit/profile-edit.component";
 import {ProfileViewComponent} from "./profile-view/profile-view.component";
 import {Profile} from "../../core/model/profile.model";
@@ -19,12 +14,6 @@ import {switchMap} from "rxjs";
     MatCardHeader,
     MatCardTitle,
     MatCardContent,
-    MatFormField,
-    MatInput,
-    MatIcon,
-    MatDivider,
-    MatButton,
-    MatLabel,
     ProfileEditComponent,
     ProfileViewComponent
   ],

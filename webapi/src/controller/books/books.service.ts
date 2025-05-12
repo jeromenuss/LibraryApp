@@ -1,19 +1,81 @@
-import {Inject, Injectable, NotFoundException} from '@nestjs/common';
-import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
-import * as admin from 'firebase-admin';
-import {FirebaseRepository} from "../../firebase/firebase.repository";
-import {Book} from "../../core/models/book.model";
-import {app} from "firebase-admin";
+import { Injectable } from '@nestjs/common';
+import { FirebaseRepository } from '../../firebase/firebase.repository';
+import { Book } from '../../core/models/book.model';
+import { firestore } from 'firebase-admin';
+import Query = firestore.Query;
+import { PaginationDto } from '../../core/DTO/pagination.dto';
 
 @Injectable()
-export class BooksService extends FirebaseRepository<Book>{
+export class BooksService extends FirebaseRepository<Book> {
+  constructor() {
+    super();
+  }
 
-    constructor() {
-        super();
+  async searchAsync(
+    minYearPublish: number = 0,
+    maxYearPublish: number = 0,
+    limit: number,
+    typeRead: 'previous' | 'next' = 'next',
+    idDocPosition?: string,
+  ): Promise<PaginationDto<Book>> {
+    let query: FirebaseFirestore.Query<
+      FirebaseFirestore.DocumentData,
+      FirebaseFirestore.DocumentData
+    > = this.collection.orderBy('title');
+
+    query = this.generationWhere(query, minYearPublish, maxYearPublish);
+
+    return await this.getDocsWithPagination(
+      query,
+      limit,
+      typeRead,
+      idDocPosition,
+    );
+  }
+
+  private generationWhere(
+    query: Query,
+    minYearPublish: number = 0,
+    maxYearPublish: number = 0,
+  ): FirebaseFirestore.Query<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData> {
+    const currentYear = new Date(Date.now()).getFullYear();
+
+    if (minYearPublish > 0 && maxYearPublish > 0) {
+      query = query
+        .where('yearPublish', '>=', Number(minYearPublish))
+        .where('yearPublish', '<=', Number(maxYearPublish));
+    } else {
+      if (minYearPublish >= 1400) {
+        query = query.where('yearPublish', '>=', Number(minYearPublish));
+      }
+      if (
+        minYearPublish == 0 &&
+        maxYearPublish > 0 &&
+        maxYearPublish <= currentYear
+      ) {
+        query = query.where('yearPublish', '<=', Number(maxYearPublish));
+      }
     }
 
-    /*async findAllAsync(pageSize:number, page:number): Promise<Book[]>{
+    return query;
+  }
+
+  /*if(title != ""){
+      query = query.where('title', '>=', title).where('title', "<", `${title}z`);
+    }*/
+
+  /*if(author != ""){
+      optionWhereAnd.author = Like(`%${author}%`)
+    }
+
+    if(kind != ""){
+      optionWhereAnd.kind = Like(`%${kind}%`);
+    }
+
+    return query;
+  }
+
+  /*async findAllAsync(pageSize:number, page:number): Promise<Book[]>{
         const snapshot = await this.collection.get();
         return snapshot.docs.map(doc => {
            const data = doc.data();
@@ -24,7 +86,7 @@ export class BooksService extends FirebaseRepository<Book>{
         });
     }*/
 
-    /*async findByIdAsync(id:string):Promise<Book>{
+  /*async findByIdAsync(id:string):Promise<Book>{
         return await this.collection.doc(id).get().then((doc) => {
             if(!doc.exists){
                 throw new NotFoundException("Le livre est introuvable");
@@ -38,7 +100,7 @@ export class BooksService extends FirebaseRepository<Book>{
         });
     }*/
 
-    /*async createAsync(book: Book):Promise<Book>{
+  /*async createAsync(book: Book):Promise<Book>{
         const bookData = {
             ...book,
             addDate: book.addDate instanceof Date
@@ -54,7 +116,7 @@ export class BooksService extends FirebaseRepository<Book>{
         };
     }*/
 
-    /*async updateAsync(id:string, book:Partial<Book>):Promise<void>{
+  /*async updateAsync(id:string, book:Partial<Book>):Promise<void>{
         return this.collection.doc(id).then(async (docRef) => {
             if(!docRef.exists){
                 throw new NotFoundException("Le livre est introuvable");
@@ -76,11 +138,11 @@ export class BooksService extends FirebaseRepository<Book>{
 
     }*/
 
-    /*async deleteAsync(id:string):Promise<void>{
+  /*async deleteAsync(id:string):Promise<void>{
         await this.firebaseRepository.collection.doc(id).delete();
     }*/
 
-    /*
+  /*
     async createRangeAsync(books: Book[]){
         await this.bookRepository.insert(books);
     }

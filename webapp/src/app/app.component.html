@@ -1,6 +1,6 @@
 <div class="app-container">
   <!-- Header/Menu -->
-  <app-toolbar [hasLogin]="hasLogin" (logoutEvent)="logout($event)" />
+  <app-toolbar (logoutEvent)="logout($event)" />
 
   <!-- Main Content -->
   <div class="content-wrapper">
@@ -10,7 +10,7 @@
 
   <!-- Footer -->
   <footer class="footer">
-      <span>© 2024 Mon Application. Tous droits réservés.</span>
+      <span>© {{ currentYear }} - {{ title }}</span>
       <span class="spacer"></span>
   </footer>
 </div>

@@ -2,7 +2,7 @@ import {Environment} from "./environment.interface";
 
 export const environment : Environment = {
   production: false,
-  apiUrl: "http://localhost:3001/api",
+  apiUrl: "http://127.0.0.1:5001/library-app-20329/us-central1/api",
   applicationName: "Library App",
   firebaseApp:{
     apiKey: "apiKey",

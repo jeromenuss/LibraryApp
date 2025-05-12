@@ -2,6 +2,9 @@
   "name": "webapi",
   "version": "0.0.1",
   "description": "",
+  "engines": {
+    "node": "22"
+  },
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -34,6 +37,7 @@
     "@nestjs/swagger": "^11.1.1",
     "@nestjs/typeorm": "^11.0.0",
     "crypto-ts": "^1.0.2",
+    "dotenv": "^16.5.0",
     "firebase-admin": "^13.2.0",
     "firebase-functions": "^6.3.2",
     "passport": "^0.7.0",
@@ -75,7 +79,7 @@
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
   },
-  "main": "dist/index.js",
+  "main": "dist/index.firebase.js",
   "jest": {
     "moduleFileExtensions": [
       "js",

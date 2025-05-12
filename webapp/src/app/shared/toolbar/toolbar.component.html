@@ -8,8 +8,11 @@
 
     <!-- Navigation Links -->
     <div class="nav-links">
-      <a mat-button routerLink="/features">Les livres</a>
-      <a mat-button routerLink="/about">Gestion des emprunts</a>
+      <a mat-button routerLink="/home">Les livres</a>
+      @if((hasLogin | async) && (isAdmin | async)){
+        <a mat-button routerLink="/home" disabled>Gestion des emprunts</a>
+        <a mat-button color="primary" routerLink="/book/new">Créer un nouveau livre</a>
+      }
     </div>
 
     <!-- Spacer -->
@@ -19,7 +22,7 @@
     @if(hasLogin | async){
       <button mat-stroked-button [matMenuTriggerFor]="userMenu">
         <mat-icon>account_circle</mat-icon>
-        {{ displayName }}
+        {{ displayName | async }}
       </button>
       <mat-menu #userMenu="matMenu">
         <button mat-menu-item routerLink="/user/profile/me">

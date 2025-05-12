@@ -4,7 +4,7 @@ import {catchError, Observable, retry, throwError} from "rxjs";
 export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req)
       .pipe(
-        retry(2),
+        retry(1),
         catchError((error) => {
           let errorMessage = "";
 
@@ -14,7 +14,6 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
             errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
           }
 
-          console.log(errorMessage);
           return throwError(() => errorMessage);
         })
       );

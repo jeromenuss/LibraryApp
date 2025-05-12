@@ -3,12 +3,14 @@ import {MatButton} from "@angular/material/button";
 import {MatDivider} from "@angular/material/divider";
 import {MatFormField} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
-import {MatInput, MatLabel} from "@angular/material/input";
+import {MatError, MatInput, MatLabel} from "@angular/material/input";
 import {Profile} from "../../../core/model/profile.model";
 import { HttpClient } from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../../../core/services/auth.service";
 import {UpdateProfileDto} from "../../../core/dto/update-profile.dto";
+import {confirmPasswordValidator} from "../../../core/validators/confirm-password.validator";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile-edit',
@@ -19,6 +21,7 @@ import {UpdateProfileDto} from "../../../core/dto/update-profile.dto";
     MatIcon,
     MatInput,
     MatLabel,
+    MatError,
     ReactiveFormsModule
   ],
   templateUrl: './profile-edit.component.html',
@@ -37,12 +40,11 @@ export class ProfileEditComponent implements OnInit {
     lastName:FormControl<string>;
     mail:FormControl<string>;
     phone:FormControl<string>;
-    oldPassword:FormControl<string>;
     password:FormControl<string>;
     passwordConfirm:FormControl<string>;
   }>;
 
-  constructor(private fb:FormBuilder, private authService:AuthService,) {
+  constructor(private fb:FormBuilder, private authService:AuthService, private router:Router) {
 
   }
 
@@ -53,15 +55,14 @@ export class ProfileEditComponent implements OnInit {
       lastName: [this.profile!.lastName, [Validators.required]],
       mail: [this.profile!.mail, [Validators.required, Validators.email]],
       phone: this.profile!.phone!,
-      oldPassword: '',
-      password: '',
-      passwordConfirm: ''
+      password: ['', [Validators.minLength(6)]],
+      passwordConfirm: ['', [Validators.minLength(6), confirmPasswordValidator]]
     })
   }
 
   onCancel() {
 
-    this.profileView.emit();
+    this.profileView.emit(this.profile);
   }
 
   onSubmit() {
@@ -75,15 +76,18 @@ export class ProfileEditComponent implements OnInit {
     }
 
     this.authService.update(updateProfile).subscribe({
-      next:()=>{
-        console.log("Profile updated", this.profileForm.value as Profile);
+      next:async ()=>{
+        if(updateProfile.password != ""){
+          this.authService.logout().subscribe(async () => {
+            await this.router.navigate(['user/login'], {queryParams : {logout:true}});
+          });
+        }
+        //console.log("Profile updated", this.profileForm.value as Profile);
         this.profileView.emit(this.profileForm.value as Profile);
       },
       error:()=>{
         console.log("Error updating profile", this.profile);
       }
     });
-
-
   }
 }

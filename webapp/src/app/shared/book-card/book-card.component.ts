@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {
   MatCard,
   MatCardActions,
@@ -10,6 +10,7 @@ import {
 import {SlicePipe} from "@angular/common";
 import {MatButton} from "@angular/material/button";
 import {Book} from "../../core/model/book.model";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-book-card',
@@ -21,21 +22,26 @@ import {Book} from "../../core/model/book.model";
     MatCardHeader,
     MatCardSubtitle,
     MatCardTitle,
-    SlicePipe
+    SlicePipe,
+    RouterLink
   ],
   templateUrl: './book-card.component.html',
   styleUrl: './book-card.component.scss'
 })
-export class BookCardComponent {
+export class BookCardComponent implements OnInit {
 
   @Input() book!: Book;
 
+  bookId:string = "";
 
-  borrowBook(id: number) {
+  ngOnInit(){
+    this.bookId= this.book.id??""
+  }
+
+  borrowBook(id: string) {
 
   }
 
-  viewBookDetails(id: number) {
-
+  viewBookDetails(id: string) {
   }
 }

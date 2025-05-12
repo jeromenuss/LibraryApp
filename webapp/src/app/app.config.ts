@@ -1,4 +1,4 @@
-import {ApplicationConfig, importProvidersFrom} from '@angular/core';
+import {ApplicationConfig, importProvidersFrom, LOCALE_ID} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -17,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([AuthInterceptor, ErrorInterceptor])),
     provideClientHydration(),
     provideFirebaseApp(() => initializeApp(environment.firebaseApp)),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    {provide: LOCALE_ID, useValue: 'fr-FR'},
   ]
 };

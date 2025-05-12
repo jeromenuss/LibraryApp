@@ -9,10 +9,10 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button mat-button color="primary" (click)="borrowBook(book.id)">
+    <button mat-button color="primary" (click)="borrowBook(bookId)">
       EMPRUNTER
     </button>
-    <button mat-button color="accent" (click)="viewBookDetails(book.id)">
+    <button mat-button color="accent" routerLink="/book/view/{{book.id}}">
       VOIR LA FICHE
     </button>
   </mat-card-actions>

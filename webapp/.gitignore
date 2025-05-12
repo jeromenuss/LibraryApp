@@ -44,3 +44,4 @@ Thumbs.db
 /src/environments/.environment.production.ts
 /package-lock.json
 /src/environments/.environment.preproduction.ts
+/public/

@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "library-app-20329",
+    "public": "public/browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

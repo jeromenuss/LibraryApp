@@ -1,0 +1,153 @@
+<div class="borrow-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Création d'un emprunt</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="borrowForm" (ngSubmit)="onSubmit()">
+        <!-- Recherche du livre -->
+        <div class="book-search-section">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>ISBN du livre</mat-label>
+            <input matInput
+                   formControlName="isbnBook"
+                   placeholder="Entrez l'ISBN du livre"
+                   (blur)="onIsbnSearch()">
+            <button matSuffix
+                    mat-icon-button
+                    type="button"
+                    (click)="onIsbnSearch()">
+              <mat-icon>search</mat-icon>
+            </button>
+            @if(borrowForm.controls.isbnBook.hasError('required')){
+              <mat-error>
+                L'ISBN est requis
+              </mat-error>
+            }
+
+          </mat-form-field>
+
+          <!-- Affichage des informations du livre trouvé -->
+          @if(selectedBook){
+            <div class="book-info">
+              <mat-card class="book-preview">
+                <img [src]="selectedBook.coverUrl" alt="Couverture">
+                <div class="book-details">
+                  <h3>{{selectedBook.title}}</h3>
+                  <p>{{selectedBook.author}}</p>
+                  <mat-chip-set>
+                    @if(selectedBook.isBorrowed){
+                      <mat-chip class="success-chip">
+                        Disponible
+                      </mat-chip>
+                    } @else{
+                      <mat-chip class="danger-chip">
+                        Indisponible
+                      </mat-chip>
+                    }
+                  </mat-chip-set>
+                </div>
+              </mat-card>
+            </div>
+          }
+        </div>
+
+        <div class="user-search-section">
+          <!-- Recherche de l'utilisateur -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Adresse mail de l'emprunteur</mat-label>
+            <input matInput
+                   formControlName="userEmail"
+                   (blur)="onUserSearch()">
+            <button matSuffix
+                    mat-icon-button
+                    type="button"
+                    (click)="onUserSearch()">
+              <mat-icon>search</mat-icon>
+            </button>
+            @if(borrowForm.controls.userEmail.hasError('required')){
+              <mat-error>
+                L'adresse mail de l'utilisateur est requise
+              </mat-error>
+            }
+            @if(borrowForm.controls.userEmail.hasError('email')){
+              <mat-error>
+                Veuillez saisir une adresse mail valide - Exemple : joe&commat;example.com
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Informations utilisateur trouvé -->
+          @if(selectedUser){
+            <div class="user-info">
+              <mat-card class="user-preview">
+                <mat-icon>person</mat-icon>
+                <div class="user-details">
+                  <h3>{{selectedUser.lastName}} {{selectedUser.name}}</h3>
+                  <p>{{selectedUser.email}}</p>
+                </div>
+                <div class="user-details">
+                  @if(selectedUser.canBorrow){
+                    <mat-chip-set>
+                      <mat-chip class="success-chip">Emprunt possible</mat-chip>
+                    </mat-chip-set>
+                  }@else{
+                    <mat-chip-set>
+                      <mat-chip class="danger-chip">Pas d'emprunt possible</mat-chip>
+                    </mat-chip-set>
+                    <p><strong>Raison : </strong>{{selectedUser.reason}}</p>
+                  }
+                </div>
+              </mat-card>
+            </div>
+          }
+        </div>
+
+        <!-- Dates -->
+        <div class="dates-section">
+          <!-- Date d'emprunt -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date d'emprunt</mat-label>
+            <input matInput
+                   [value]="borrowForm.value.borrowDate | date:'dd/MM/yyyy'"
+                   disabled>
+          </mat-form-field>
+
+          <!-- Date de retour prévisionnelle -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date de retour prévue</mat-label>
+            <input matInput
+                   [matDatepicker]="returnPicker"
+                   formControlName="previsiousDateBack">
+            <mat-datepicker-toggle matSuffix [for]="returnPicker"></mat-datepicker-toggle>
+            <mat-datepicker #returnPicker></mat-datepicker>
+            @if(borrowForm.controls.previsiousDateBack.hasError('required')){
+              <mat-error>
+                La date de retour prévue est requise
+              </mat-error>
+            }
+          </mat-form-field>
+
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="action-buttons">
+          <button type="button"
+                  mat-stroked-button
+                  (click)="onCancel()">
+            <mat-icon>close</mat-icon>
+            Annuler
+          </button>
+          <button type="submit"
+                  mat-raised-button
+                  color="primary"
+                  [disabled]="!borrowForm.valid">
+            <mat-icon>save</mat-icon>
+            Enregistrer
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

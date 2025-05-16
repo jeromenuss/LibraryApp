@@ -1,0 +1,80 @@
+<div class="borrow-list-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Liste des emprunts</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Filtres d'état -->
+      <div class="state-filter">
+        <mat-button-toggle-group
+          name="state"
+          [(value)]="selectedState"
+          (change)="onStateFilterChange($event.value)"
+          appearance="legacy"
+          exclusive>
+          <mat-button-toggle value="">Tous</mat-button-toggle>
+          <mat-button-toggle value="borrowed">Emprunté</mat-button-toggle>
+          <mat-button-toggle value="late">En retard</mat-button-toggle>
+          <mat-button-toggle value="returned">Rendu</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="filteredDataSource" class="mat-elevation-z1">
+          <!-- ISBN -->
+          <ng-container matColumnDef="isbn">
+            <th mat-header-cell *matHeaderCellDef>ISBN</th>
+            <td mat-cell *matCellDef="let element">{{element.isbn}}</td>
+          </ng-container>
+          <!-- Titre -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Livre</th>
+            <td mat-cell *matCellDef="let element">{{element.title}}</td>
+          </ng-container>
+          <!-- Utilisateur -->
+          <ng-container matColumnDef="user">
+            <th mat-header-cell *matHeaderCellDef>Utilisateur</th>
+            <td mat-cell *matCellDef="let element">{{element.userName}}</td>
+          </ng-container>
+          <!-- Date d'emprunt -->
+          <ng-container matColumnDef="borrowDate">
+            <th mat-header-cell *matHeaderCellDef>Emprunté le</th>
+            <td mat-cell *matCellDef="let element">{{element.borrowDate | date:'dd/MM/yyyy'}}</td>
+          </ng-container>
+          <!-- Retour prévu -->
+          <ng-container matColumnDef="previousDateBack">
+            <th mat-header-cell *matHeaderCellDef>Retour prévu</th>
+            <td mat-cell *matCellDef="let element">{{element.exceptedBackDate | date:'dd/MM/yyyy'}}</td>
+          </ng-container>
+          <!-- Etat -->
+          <ng-container matColumnDef="state">
+            <th mat-header-cell *matHeaderCellDef>État</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-chip
+                [color]="
+                  element.state === 'borrowed'
+                    ? 'primary'
+                    : element.state === 'late'
+                    ? 'warn'
+                    : 'accent'
+                "
+                selected>
+                {{
+                  element.state === 'borrowed'
+                    ? 'Emprunté'
+                    : element.state === 'late'
+                      ? 'En retard'
+                      : 'Rendu'
+                }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [length]="filteredLength" [pageSize]="10" (page)="onPageChange($event)"></mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

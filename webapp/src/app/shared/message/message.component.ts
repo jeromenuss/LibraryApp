@@ -3,6 +3,7 @@ import {MatCard, MatCardContent} from "@angular/material/card";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
 import {NgClass} from "@angular/common";
+import {MessagesService} from "../../core/services/messages.service";
 
 @Component({
   selector: 'app-message',
@@ -18,14 +19,14 @@ import {NgClass} from "@angular/common";
 })
 export class MessageComponent {
 
+  constructor(private messagesService:MessagesService) {
+  }
+
   @Input()
   Type:"danger" | "success" | "info" | "warning" = 'info';
 
   onClose(){
-    const element = document.querySelector('.alert-card');
-    if(element){
-      element.remove();
-    }
+    this.messagesService.destroyMessage()
   }
 
 

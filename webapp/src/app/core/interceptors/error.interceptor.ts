@@ -1,20 +1,27 @@
-import {HttpHandler, HttpInterceptorFn} from '@angular/common/http';
+import {HttpErrorResponse, HttpHandler, HttpInterceptorFn} from '@angular/common/http';
 import {catchError, Observable, retry, throwError} from "rxjs";
+import {AppError} from "../commons/app.error";
+import {CodeMessage} from "../commons/error-code.enum";
+import {inject} from "@angular/core";
+import {MessagesService} from "../services/messages.service";
 
 export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
-    return next(req)
+  let messagesService = inject(MessagesService);
+
+  return next(req)
       .pipe(
         retry(1),
-        catchError((error) => {
-          let errorMessage = "";
+        catchError((error:HttpErrorResponse) => {
 
-          if(error.error instanceof ErrorEvent){
-            errorMessage = `Error : ${error.error.message}`;
-          } else {
-            errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-          }
+          console.log(error.error);
 
-          return throwError(() => errorMessage);
+          let errorApp: AppError = new AppError();
+          errorApp.code = String(error.error.statusCode);
+          errorApp.message = error.error.message;
+          errorApp.name = error.name;
+
+          messagesService.sendMessage("danger", errorApp.message);
+          return throwError(() => AppError);
         })
       );
 };

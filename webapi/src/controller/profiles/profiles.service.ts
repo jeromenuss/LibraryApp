@@ -7,6 +7,8 @@ import { FirebaseRepository } from '../../firebase/firebase.repository';
 import * as admin from 'firebase-admin';
 import { Profile } from 'src/core/models/profile.model';
 import { RegisterDto } from 'src/core/DTO/register.dto';
+import {ProfileDetailDto} from "../../core/DTO/profile-detail.dto";
+import {ApiHttpException} from "../../core/commons/api-http.exception";
 
 @Injectable()
 export class ProfilesService extends FirebaseRepository<Profile> {
@@ -50,6 +52,56 @@ export class ProfilesService extends FirebaseRepository<Profile> {
 
     if (userDoc) return userDoc.data()!.uuid as string;
     else throw new NotFoundException('Le profil utilisateur est introuvable');
+  }
+
+  async getUserByEmail(email: string): Promise<ProfileDetailDto> {
+    const querySnapshot = await this.collection.where('mail', '==', email).get();
+
+    if (querySnapshot.empty) {
+      throw new NotFoundException("L'utilisateur recherché est introuvable");
+    }
+
+    const profileDoc = querySnapshot.docs[0];
+    const profileData = profileDoc.data() as Profile;
+
+    /*A terme :
+      canBorrow =
+        - Si l'utilisateur est active
+        - Si l'utilisateur emprunte actuellement mois que 5 livres.
+        - Si l'utilisateur a un emprunt actuellement en retard.
+    */
+    let canBorrow = true;
+    let reason: string = "";
+
+    if(!profileData.isActive){
+      canBorrow = false;
+      reason = "Le profile d'utilisateur est désactivé"
+    }
+
+    return {
+      id: profileDoc.id,
+      email : profileData.mail,
+      name: profileData.name ?? "",
+      lastName: profileData.lastName ?? "",
+      canBorrow : canBorrow,
+      reason: reason
+    }
+  }
+
+  async checkUserCanBorrow(id: string): Promise<boolean> {
+
+    const profileDoc = await this.collection.doc(id).get();
+    if (!profileDoc.exists) {
+      throw new ApiHttpException("profile.not_found");
+    }
+
+    let profile = profileDoc.data() as Profile;
+
+    if(!profile.isActive) {
+      throw new ApiHttpException("profile.disabled");
+    }
+
+    return true;
   }
 
   async deleteProfileByUuid(uuid: string) {

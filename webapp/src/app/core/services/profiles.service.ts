@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
-import {User} from "@angular/fire/auth";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "@env/.environment";
-import {catchError, filter, map, Observable, of, switchMap} from "rxjs";
+import { filter, map, Observable, switchMap} from "rxjs";
 import {Profile} from "../model/profile.model";
-import {UpdateProfileDto} from "../dto/update-profile.dto";
+import {SelectedUserDto} from "../dto/selected-user.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +31,10 @@ export class ProfilesService {
         this.http.get<Profile>(environment.apiUrl + "/profiles/user/" + uid)
       )
     );
+  }
+
+  getProfileByEmail(email: string) {
+    return this.http.get<SelectedUserDto>(environment.apiUrl + "/profiles/email/" + email);
   }
 
   get isAdmin(): Observable<boolean> {

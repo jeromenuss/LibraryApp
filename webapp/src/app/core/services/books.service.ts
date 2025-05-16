@@ -1,21 +1,27 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
+import {catchError, forkJoin, map, Observable, throwError} from "rxjs";
 import {environment} from "@env/.environment";
 import { Book } from '../model/book.model';
 import {Pagination} from "../model/pagination.model";
 import {SearchDto} from "../dto/search.dto";
+import {AppError} from "../commons/app.error";
+import {CodeMessage} from "../commons/error-code.enum";
+import {BaseService} from "./base.service";
+import {MessagesService} from "./messages.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class BooksService {
+export class BooksService extends BaseService {
 
-  private http = inject(HttpClient);
   private URL_BASE_COVER = "https://covers.openlibrary.org/b/isbn/";
   private URL_BASE_GOOGLE_BOOK = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
+  private readonly DEFAULT_COVER = "assets/img/cover.png";
 
-  constructor() { }
+  constructor() {
+    super();
+  }
 
   getAllBooks(page:number, typeRead:"previous" | "next" = "next", lastItemId:string):Observable<Pagination<Book>> {
     //Création des paramètres
@@ -37,8 +43,32 @@ export class BooksService {
     return this.http.get<Book>(environment.apiUrl + '/books/'+bookId);
   }
 
+  getBookByIsbn(isbn:string):Observable<Book> {
+    return this.http.get<Book>(environment.apiUrl + '/books/isbn/'+ isbn)
+  }
+
   getBookFromGoogleApi(isbn:string):Observable<any> {
     return this.http.get<any>(this.URL_BASE_GOOGLE_BOOK + isbn);
+  }
+
+  getCompleteBookInfo(isbn:string){
+    return forkJoin({
+      book: this.getBookByIsbn(isbn),
+      bookFromApi: this.getBookFromGoogleApi(isbn)
+    }).pipe(
+      map(({book, bookFromApi}) => {
+        let coverUrl:string = this.DEFAULT_COVER;
+        if (bookFromApi && bookFromApi.totalItems >= 1) {
+          if (bookFromApi.items[0].volumeInfo.imageLinks) {
+            coverUrl = bookFromApi.items[0].volumeInfo.imageLinks.thumbnail;
+          }
+        }
+        return {
+          bookDetails: book,
+          coverUrl:coverUrl
+        }
+      })
+    )
   }
 
   searchBooks(page:number, typeRead:"previous" | "next" = "next", lastItemId:string, minYear:number, maxYear:number){
@@ -86,4 +116,20 @@ export class BooksService {
 
     return this.http.put<void>(`${environment.apiUrl}/books/${book.id}`, book);
   }
+
+  /*private handleError(error:HttpErrorResponse) {
+    let errorApp: AppError = new AppError();
+
+    if(error.error instanceof ErrorEvent) {
+      errorApp.code = CodeMessage.CLIENT;
+      errorApp.message = error.error.message;
+      errorApp.name = error.name;
+    }else{
+      errorApp.code = String(error.status);
+      errorApp.message = ;
+      errorApp.name = error.name;
+    }
+
+    return throwError(() => new Error(error.message));
+  }*/
 }

@@ -9,6 +9,7 @@ import {initializeApp, provideFirebaseApp} from "@angular/fire/app";
 import { environment } from '@env/.environment';
 import {provideAuth, getAuth} from "@angular/fire/auth";
 import {ErrorInterceptor} from "./core/interceptors/error.interceptor";
+import {DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter} from "@angular/material/core";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,5 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(environment.firebaseApp)),
     provideAuth(() => getAuth()),
     {provide: LOCALE_ID, useValue: 'fr-FR'},
+    {provide: DateAdapter, useClass: NativeDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS}
   ]
 };

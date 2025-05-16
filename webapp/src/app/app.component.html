@@ -4,7 +4,11 @@
 
   <!-- Main Content -->
   <div class="content-wrapper">
-    <div class="content-message"></div>
+    <div class="content-message">
+      @if((messageService.currentMessage$ | async)?.hasMessage){
+        <app-message [Type]="(messageService.currentMessage$ | async)?.type ?? 'info'">{{ (messageService.currentMessage$ | async)?.message }}</app-message>
+      }
+    </div>
     <router-outlet></router-outlet>
   </div>
 

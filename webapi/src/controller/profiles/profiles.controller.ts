@@ -13,6 +13,7 @@ import { ProfilesService } from './profiles.service';
 import { HttpErrorExceptionFilter } from '../../core/filter/errors/errors.filter';
 import { Profile } from '../../core/models/profile.model';
 import { Public } from '../auth/public.decorator';
+import {ProfileDetailDto} from "../../core/DTO/profile-detail.dto";
 
 @Controller('profiles')
 @UseFilters(new HttpErrorExceptionFilter())
@@ -23,6 +24,11 @@ export class ProfilesController {
   @Get()
   async findAllAsync(): Promise<Profile[]> {
     return await this.usersService.getAllDocsAsync();
+  }
+
+  @Get('email/:email')
+  async findByEmail(@Param('email') email: string): Promise<ProfileDetailDto> {
+    return await this.usersService.getUserByEmail(email);
   }
 
   @Get('user/:uid')

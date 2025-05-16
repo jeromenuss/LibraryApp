@@ -111,6 +111,12 @@ export class BooksController {
   }
 
   @Public()
+  @Get('isbn/:isbn')
+  async findByIsbnAsync(@Param('isbn') isbn: string): Promise<Book | null> {
+    return await this.bookService.getBookByIsbn(isbn);
+  }
+
+  @Public()
   @Post()
   async create(@Body() book: Book) {
     return await this.bookService.createDocAsync(book);

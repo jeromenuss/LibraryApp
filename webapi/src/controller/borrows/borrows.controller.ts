@@ -1,7 +1,8 @@
 import {
+  Body,
   Controller,
   Get,
-  Param,
+  Param, Patch, Post, Put,
   UseFilters,
 } from '@nestjs/common';
 import { BorrowsService } from './borrows.service';
@@ -30,25 +31,13 @@ export class BorrowsController {
     return await this.borrowService.getDocByIdAsync(id);
   }
 
-  /*@Get('profiles/:id/borrows')
-  async getByUserId(@Param('id') id: number) {
-    throw new NotImplementedException('Fonction en cours de développement');
-  }*/
+  @Post('borrows')
+  async createBorrow(@Body() borrow:BorrowsDto):Promise<string>{
+    return this.borrowService.createBorrow(borrow);
+  }
 
-  /*@Post('borrows')
-  async createBorrow(@Body() borrow: BorrowsDto) {
-    if (borrow.bookId == 0)
-      throw new BadRequestException("L'identifiant du livre est invalide");
-    if (borrow.userId == 0)
-      throw new BadRequestException(
-        "L'identifiant de l'utilisateur est invalide",
-      );
-
-    throw new NotImplementedException('Fonction en cours de développement');
-  }*/
-
-  /* @Put('borrows/:id/back')
-  async backBook(@Param('id') id: number) {
-    throw new NotImplementedException('Fonction en cours de développement');
-  }*/
+  @Patch('borrows/:id/back')
+  async backBook(@Param('id') id:string):Promise<void> {
+    return this.borrowService.backBook(id);
+  }
 }

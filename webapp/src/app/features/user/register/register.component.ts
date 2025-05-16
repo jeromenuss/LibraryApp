@@ -5,9 +5,9 @@ import {MatError, MatFormField, MatInput, MatLabel} from "@angular/material/inpu
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import { MatIcon } from '@angular/material/icon';
 import {Router, RouterLink} from "@angular/router";
-import {AuthService} from "../../core/services/auth.service";
-import {RegisterDto} from "../../core/dto/register.dto";
-import {MessageComponent} from "../../shared/message/message.component";
+import {AuthService} from "../../../core/services/auth.service";
+import {RegisterDto} from "../../../core/dto/register.dto";
+import {MessageComponent} from "../../../shared/message/message.component";
 
 @Component({
   selector: 'app-register',
